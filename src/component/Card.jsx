@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+// helpers
+import { productQuantity, shortenText } from "../helpers/helper";
 // icons
 import { TbListDetails } from "react-icons/tb";
 import { TbShoppingBagCheck } from "react-icons/tb";
-import { shortenText } from "../helpers/helper";
+import { MdDeleteOutline } from "react-icons/md";
 // CSS
 import styles from "./Card.module.css";
 import { useCart } from "../context/CartProvider";
@@ -10,12 +12,14 @@ import { useCart } from "../context/CartProvider";
 function Card({ data }) {
   const { id, title, image, price } = data;
 
+  // states
   const [cartState, cartDispatch] = useCart();
-  console.log(cartState)
+
+  const quantity = productQuantity(cartState, id);
 
   // handler
-  const clickHandler = () => {
-    cartDispatch({ type: "ADD_ITEM", payload: data });
+  const clickHandler = (type) => {
+    cartDispatch({ type, payload: data });
   };
 
   return (
@@ -28,9 +32,21 @@ function Card({ data }) {
           <TbListDetails />
         </Link>
         <div>
-          <button onClick={clickHandler}>
-            <TbShoppingBagCheck />
-          </button>
+          {quantity === 1 ? (
+            <button onClick={() => clickHandler("REMOVE_ITEM")}>
+              <MdDeleteOutline />
+            </button>
+          ) : quantity > 1 ? (
+            <button onClick={() => clickHandler("DECREASE")}>-</button>
+          ) : null}
+          {quantity !== 0 ? <span>{quantity}</span> : null}
+          {quantity === 0 ? (
+            <button onClick={() => clickHandler("ADD_ITEM")}>
+              <TbShoppingBagCheck />
+            </button>
+          ) : (
+            <button onClick={() => clickHandler("INCREASE")}>+</button>
+          )}
         </div>
       </div>
     </div>
