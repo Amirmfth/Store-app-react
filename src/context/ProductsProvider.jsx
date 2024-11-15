@@ -32,9 +32,16 @@ function ProductsProvider({ children }) {
 }
 
 const useProducts = () => {
-  const products = useContext(ProductsContext)
-  return products
-}
+  const products = useContext(ProductsContext);
+  return products;
+};
+
+const useProductDetails = (id) => {
+  const product = useContext(ProductsContext).find(
+    (product) => product.id === id
+  );
+  return product;
+};
 
 export default ProductsProvider;
-export {useProducts}
+export { useProducts, useProductDetails };
