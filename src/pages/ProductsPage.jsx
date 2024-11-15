@@ -5,6 +5,8 @@ import { useSearchParams } from "react-router-dom";
 // components
 import Card from "../component/Card";
 import Loader from "../component/Loader";
+import SearchBox from "../component/SearchBox";
+import Sidebar from "../component/Sidebar";
 // helpers
 import {
   filterProducts,
@@ -13,9 +15,6 @@ import {
 } from "../helpers/helper";
 // CSS
 import styles from "./ProductsPage.module.css";
-// icons
-import SearchBox from "../component/SearchBox";
-import Sidebar from "../component/Sidebar";
 
 function ProductsPage() {
   // states
