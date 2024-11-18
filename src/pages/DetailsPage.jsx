@@ -1,6 +1,9 @@
 // hooks
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useProductDetails } from "../context/ProductsProvider";
+import { useDispatch, useSelector } from "react-redux";
+// store
+import { fetchProducts } from "../features/product/productSlice";
 // components
 import Loader from "../component/Loader";
 // CSS
@@ -12,9 +15,15 @@ import { FaArrowLeft } from "react-icons/fa";
 
 function DetailsPage() {
   //states
+  const dispatch = useDispatch();
   const { id } = useParams();
+  const { products } = useSelector((store) => store.product);
+  const productDetails = products.find((p) => p.id === +id);
 
-  const productDetails = useProductDetails(+id);
+  useEffect(() => {
+    if (products.length) return;
+    dispatch(fetchProducts());
+  }, []);
 
   if (!productDetails) return <Loader />;
 
